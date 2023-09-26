@@ -18,7 +18,11 @@ woman("Olya").
 woman("Alina").
 woman("Masha").
 
+married("Masha","Pavel").
+married("Alina","Dima").
 
+check_married(X, Y):-
+  married(X, Y); married(Y, X).
 
 father(X,Y):-
   parent(X,Y),man(X).
@@ -29,10 +33,32 @@ mother(X,Y):-
 sister(X,Y):-
   parent(Z,X), parent(Z,Y), woman(X), X\=Y.
 
+brother(X,Y):-
+  parent(Z,Y),parent(Z,X),man(X), X\=Y.
 
-%son(X,Y):-
-%  parent(Y,X),man(X).
+son(X,Y):-
+  parent(Y,X),man(X).
 
+daughter(X,Y):-
+  parent(Y,X),woman(X).
+
+wife(X,Y):-
+  check_married(X,Y), woman(X).
+
+husband(X,Y):-
+  check_married(X,Y), man(X).
+
+brother_in_law(X, Y):-
+  wife(Y, Wife),
+  brother(X, Wife).
+
+mother_in_law(X,Y):-
+  wife(Y, Wife),
+  mother(X, Wife).
+
+uncle(X, Y):-
+  parent(Parent, Y),
+  brother(X, Parent).
 
 
 %дедушка и общие родители
