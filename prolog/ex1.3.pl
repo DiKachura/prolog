@@ -1,74 +1,86 @@
-parent("Alexandr","Olya").
-parent("Masha","Olya").
-parent("Alexandr","Alina").
-parent("Masha","Alina").
-parent("Alexandr","Leha").
-parent("Masha","Leha").
-parent("Leha","Gleb").
-parent("Dasha","Gleb").
-parent("Alina","Maks").
-parent("Leha","Maks").
+father(sergey, elena).
+father(ivan, milana).
+father(dmitriy, vasiliy).
+father(mark, vasilisa).
+father(vladimir, nikita).
+father(alexandr, egor).
+father(alexandr, diana).
+father(danil, eva).
+father(maxim, robert).
+father(vladimir, alexandr).
 
-man("Alexandr").
-man("Leha").
-man("Pavel").
-man("Dima").
+mother(marina, elena).
+mother(marina, milana).
+mother(olga, vasiliy).
+mother(elena, vasilisa).
+mother(faina, nikita).
+mother(irina, egor).
+mother(oksana, eva).
+mother(violetta, robert).
 
-woman("Olya").
-woman("Alina").
-woman("Masha").
+woman(marina).
+woman(marina).
+woman(olga).
+woman(elena).
+woman(faina).
+woman(irina).
+woman(oksana).
+woman(violetta).
 
-married("Masha","Pavel").
-married("Alina","Dima").
+man(sergey).
+man(ivan).
+man(dmitriy).
+man(mark).
+man(vladimir).
+man(alexandr).
+man(danil).
+man(maxim).
+man(vasiliy).
+man(nikita).
+man(egor).
+man(robert).
 
-check_married(X, Y):-
-  married(X, Y); married(Y, X).
+parent(sergey, elena).
+parent(ivan, milana).
+parent(dmitriy, vasiliy).
+parent(mark, vasilisa).
+parent(vladimir, nikita).
+parent(alexandr, egor).
+parent(danil, eva).
+parent(maxim, robert).
+parent(marina, elena).
+parent(marina, milana).
+parent(olga, vasiliy).
+parent(elena, vasilisa).
+parent(faina, nikita).
+parent(irina, egor).
+parent(oksana, eva).
+parent(vladimir, alexandr).
+parent(alexandr, diana).
+parent(violetta, robert).
 
-father(X,Y):-
-  parent(X,Y),man(X).
-
-mother(X,Y):-
-  parent(X,Y),woman(X).
-
-sister(X,Y):-
-  parent(Z,X), parent(Z,Y), woman(X), X\=Y.
-
-brother(X,Y):-
-  parent(Z,Y),parent(Z,X),man(X), X\=Y.
 
 son(X,Y):-
-  parent(Y,X),man(X).
-
-daughter(X,Y):-
-  parent(Y,X),woman(X).
-
-wife(X,Y):-
-  check_married(X,Y), woman(X).
-
-husband(X,Y):-
-  check_married(X,Y), man(X).
-
-brother_in_law(X, Y):-
-  wife(Y, Wife),
-  brother(X, Wife).
-
-mother_in_law(X,Y):-
-  wife(Y, Wife),
-  mother(X, Wife).
-
-uncle(X, Y):-
-  parent(Parent, Y),
-  brother(X, Parent).
+  parent(Y,X), man(X).
 
 
-%дедушка и общие родители
+is_mother(X) :- mother(X, _).
 
-%?-father(X,"Olya"),write(X),write(" ").
-%?-mother(X,"Alina"),write(X),write(" ").
-%?-married("Alina","Dima"),write(" ").
-%?-husband("Masha",Y),write(Y),write(" ").
-%?-wife(X,"Pavel"),write(X),write(" ").
-%?-sister("Olya","Alina"),write(" ").
-%?-brother_in_law(X,"Dima"),write(X),write(" ").
-%?-mother_in_law(X,"Dima"),write(X),write(" ").
-%?-uncle(X,"Maks"),write(X),write(" ").
+is_father(X) :- father(X, _).
+
+is_son(X) :- father(_, X), man(X).
+
+is_sister(X, Y) :- 
+  woman(X),
+  parent(Z, X), 
+  parent(Z, Y),
+  X \= Y.
+
+grandparent(X, Y) :-
+  man(X),
+  father(X, Z),
+  parent(Z, Y).
+
+common_parent(X, Y) :-
+  parent(Z, X),
+  parent(Z, Y).
