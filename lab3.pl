@@ -1,5 +1,3 @@
-edge(1, 2, 7).
-edge(1, 3, 9).
 edge(a, b, 14).
 edge(b, a, 14).
 edge(a, c, 15).
